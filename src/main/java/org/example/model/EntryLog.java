@@ -1,24 +1,23 @@
 package org.example.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 public class EntryLog {
 
     private UUID id;
     private User user;
-    private String entryTime;
-    private String exitTime;
+    private LocalDateTime entryTime;
+    private LocalDateTime exitTime;
 
-    public EntryLog(User user, String entryTime) {
+    public EntryLog(User user) {
         this.id = UUID.randomUUID();
         this.user = user;
-        this.entryTime = entryTime;
-        this.exitTime = "";
+        this.entryTime = LocalDateTime.now();
+        this.exitTime = null;
     }
     public void registerExit(){
-        setExitTime(LocalDateTime.now().toString());
+        this.exitTime = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -37,20 +36,20 @@ public class EntryLog {
         this.user = user;
     }
 
-    public String getEntryTime() {
+    public LocalDateTime getEntryTime() {
         return entryTime;
     }
 
-    public void setEntryTime(String entryTime) {
+    public void setEntryTime(LocalDateTime entryTime) {
         this.entryTime = entryTime;
     }
 
-    public String getExitTime() {
+    public LocalDateTime getExitTime() {
         return exitTime;
     }
 
-    public void setExitTime(String exitTime) {
-        this.exitTime = exitTime;
+    public void setExitTime() {
+        this.exitTime = LocalDateTime.now();
     }
 
 

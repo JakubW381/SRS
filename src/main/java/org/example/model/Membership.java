@@ -9,32 +9,23 @@ public class Membership {
 
     private UUID id;
     private MEMBERSHIP_TYPE type;
-    private String validUntil;
+    private LocalDateTime validUntil;
     private double price;
 
     public Membership(MEMBERSHIP_TYPE type) {
         this.type = type;
         this.id = UUID.randomUUID();
             if (type.equals(MEMBERSHIP_TYPE.MONTHLY)){
-                this.price = 50.00;
-                LocalDateTime.now();
-                //TODO
-
-
-                this.validUntil = ;
+                this.price = 1.0*30;
+                this.validUntil = LocalDateTime.now().plusDays(30);
             }else{
-                this.price = 500.00;
-                this.validUntil = validUntil;
+                this.price = 0.8*365;
+                this.validUntil = LocalDateTime.now().plusDays(365);
             }
-
-
-
     }
 
     public boolean isAcvite(){
-
-
-        return true;
+        return LocalDateTime.now().isBefore(validUntil);
     }
     public void extendMembership(int days){
 

@@ -14,66 +14,21 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private double wallet;
     private Membership membreship;
     private List<EntryLog> entrylogs;
     private List<Reservation> reservations;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", membreship=" + membreship +
-                ", entrylogs=" + entrylogs +
-                ", reservations=" + reservations +
-                ", role=" + role +
-                '}';
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setMembreship(Membership membreship) {
-        this.membreship = membreship;
-    }
-
-    public void setEntrylogs(List<EntryLog> entrylogs) {
-        this.entrylogs = entrylogs;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public void setRole(ROLE role) {
-        this.role = role;
-    }
-
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() {
-        return email;
+    public double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
     }
 
     public String getPassword() {
@@ -82,14 +37,6 @@ public class User {
 
     public Membership getMembreship() {
         return membreship;
-    }
-
-    public List<EntryLog> getEntrylogs() {
-        return entrylogs;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
     }
 
     public ROLE getRole() {
@@ -114,15 +61,14 @@ public class User {
     }
     public EntryLog logEntry() {
         EntryLog log = new EntryLog(
-          this,
-                LocalDateTime.now().toString()
+          this
         );
         this.entrylogs.add(log);
         return log;
     }
-    public void logExit(String exitTime) {
+    public void logExit() {
         EntryLog log = this.entrylogs.getLast();
-        log.setExitTime(exitTime);
+        log.setExitTime();
         this.entrylogs.removeLast();
         this.entrylogs.add(log);
     }
