@@ -12,6 +12,17 @@ public class Membership {
     private LocalDateTime validUntil;
     private double price;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Membership Details:\n");
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Type: ").append(type).append("\n");
+        sb.append("Valid Until: ").append(validUntil).append("\n");
+        sb.append("Price: ").append(price).append("\n");
+        return sb.toString();
+    }
+
     public Membership(MEMBERSHIP_TYPE type) {
         this.type = type;
         this.id = UUID.randomUUID();
@@ -27,11 +38,18 @@ public class Membership {
     public boolean isAcvite(){
         return LocalDateTime.now().isBefore(validUntil);
     }
-    public void extendMembership(int days){
 
+    public void extendMembership(int days) {
+        if (days > 0) {
+            this.validUntil = this.validUntil.plusDays(days);
+            System.out.println("Membership extended by " + days + " days.");
+        } else {
+            System.out.println("Invalid number of days.");
+        }
     }
-    public void cancel(){
-
+    public void cancel() {
+        this.validUntil = LocalDateTime.now().minusDays(1);
+        System.out.println("Membership has been canceled.");
     }
 
 }

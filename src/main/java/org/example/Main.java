@@ -21,8 +21,7 @@ public class Main {
         User currentUser;
         Scanner scanner = new Scanner(System.in);
         String s = "";
-        while(s.split(" ")[0].equals("EXIT")){
-
+        while(true){
             while(true){//--------------- Autentykacja
                 System.out.println("login or register");
                 s = scanner.nextLine();
@@ -32,6 +31,7 @@ public class Main {
                     System.out.println("password: ");
                     String password = scanner.nextLine();
                     currentUser = userRepo.login(login,password);
+                    currentUser.logEntry();
                     break;
                 }
                 if (s.split(" ")[0].equals("register")) {
@@ -42,6 +42,7 @@ public class Main {
                     System.out.println("email: ");
                     String email = scanner.nextLine();
                     currentUser = userRepo.register(login,password,email);
+                    currentUser.logEntry();
                     break;
                 }
                 System.out.println("Auth Error, Try Again!");
@@ -69,25 +70,26 @@ public class Main {
                         System.out.println(currentUser);
                     }
                     if (s.split(" ")[0].equals("2")){ //------------------------------------------Buy Membership
-                        System.out.println("monthly:" + 1.0*30.0 + " or yearly: "+0.8*30.0+"?");
+                        System.out.println("1. Monthly:" + 1.0*30.0);
+                        System.out.println("2. Yearly: "+0.8*365.0+"?");
                         s = scanner.nextLine();
-                        if (s.split(" ")[0].equalsIgnoreCase("monthly")){//---------------------monthly
+                        if (s.split(" ")[0].equalsIgnoreCase("1")){//---------------------monthly
                             double total = 1.0*30.0;
                             if (currentUser.getWallet()<total){
                                 System.out.println("Insufficient funds");
                             }else{
                                 System.out.println("How do you wanna pay?");
-                                System.out.println("1.Blik?");
-                                System.out.println("2.PayPal?");
-                                System.out.println("3.Card?");
+                                System.out.println("1. Blik?");
+                                System.out.println("2. PayPal?");
+                                System.out.println("3. Card?");
                                 s = scanner.nextLine();
                                 Payment paymentMethod = null;
 
-                                if (s.split(" ")[0].toLowerCase().equals("blik")){
+                                if (s.split(" ")[0].equals("1")){
                                     paymentMethod = new Blik();
-                                }else if (s.split(" ")[0].toLowerCase().equals("paypal")){
+                                }else if (s.split(" ")[0].equals("2")){
                                     paymentMethod = new Paypal();
-                                }else if (s.split(" ")[0].toLowerCase().equals("card")){
+                                }else if (s.split(" ")[0].equals("3")){
                                     paymentMethod = new Card();
                                 }
                                 if (paymentMethod != null){
@@ -99,23 +101,23 @@ public class Main {
                                     System.out.println("Invalid Payment Option");
                                 }
                             }
-                        }if (s.split(" ")[0].equalsIgnoreCase("yearly")){//---------------------yearly
-                            double total = 0.8*30.0;
+                        }if (s.split(" ")[0].equalsIgnoreCase("2")){//---------------------yearly
+                            double total = 0.8*365.0;
                             if (currentUser.getWallet()<total){
                                 System.out.println("Insufficient funds");
                             }else{
                                 System.out.println("How do you wanna pay?");
-                                System.out.println("1.Blik?");
-                                System.out.println("2.PayPal?");
-                                System.out.println("3.Card?");
+                                System.out.println("1. Blik?");
+                                System.out.println("2. PayPal?");
+                                System.out.println("3. Card?");
                                 s = scanner.nextLine();
                                 Payment paymentMethod = null;
 
-                                if (s.split(" ")[0].toLowerCase().equals("blik")){
+                                if (s.split(" ")[0].equals("1")){
                                     paymentMethod = new Blik();
-                                }else if (s.split(" ")[0].toLowerCase().equals("paypal")){
+                                }else if (s.split(" ")[0].equals("2")){
                                     paymentMethod = new Paypal();
-                                }else if (s.split(" ")[0].toLowerCase().equals("card")){
+                                }else if (s.split(" ")[0].equals("3")){
                                     paymentMethod = new Card();
                                 }
                                 if (paymentMethod != null){
@@ -202,6 +204,7 @@ public class Main {
                                     name,
                                     specialities
                             );
+                            trainerRepo.addTrainer(trainer);
                         }
                         if(s.split(" ")[0].equals("7")){ //---------Delete Trainer
                             System.out.println("Enter trainer ID");
@@ -222,6 +225,7 @@ public class Main {
                                         trainerRepo.findById(id).get(),
                                         cap
                                 );
+                                groupSessionRepo.addSession(session);
                             }else{
                                 System.out.println("Invalid Trainer Id");
                             }
@@ -246,10 +250,11 @@ public class Main {
                             }
                         }
                     }
+
                 }
-                currentUser.logExit();
-                currentUser = null;
             }
+            currentUser.logExit();
+            currentUser = null;
         }
     }
 }

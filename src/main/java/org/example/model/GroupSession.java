@@ -1,7 +1,7 @@
 package org.example.model;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class GroupSession {
@@ -14,7 +14,7 @@ public class GroupSession {
         this.id = UUID.randomUUID();
         this.trainer = trainer;
         this.capacity = capacity;
-        this.participants = List.of();
+        this.participants = new ArrayList<>();
     }
 
     public Trainer getTrainer() {
@@ -23,12 +23,14 @@ public class GroupSession {
 
     @Override
     public String toString() {
-        return "GroupSession{" +
-                "id=" + id +
-                ", trainer=" + trainer +
-                ", participants=" + participants.size()+"/"+capacity +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Group Session Details:\n");
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Trainer: ").append(trainer != null ? trainer.toString() : "No Trainer").append("\n");
+        sb.append("Participants / Capacity: ").append(participants != null ? participants.size() : 0).append(" / ").append(capacity).append("\n");
+        return sb.toString();
     }
+
 
     public UUID getId() {
         return id;
@@ -36,7 +38,7 @@ public class GroupSession {
 
     public boolean addParticipant(User user){
         if(participants.contains(user)){
-            System.out.println("Your are already in that session");
+            System.out.println("You are already in that session");
             return false;
         }
         if (!isFull()){
@@ -51,12 +53,6 @@ public class GroupSession {
         return participants.size() >= capacity;
     }
     public void removeParticipant(UUID id){
-        Optional<User> user = participants.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst();
-        participants.remove(user);
+        participants.removeIf(u -> u.getId().equals(id));
     }
-
-
-
 }

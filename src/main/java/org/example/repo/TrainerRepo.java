@@ -2,19 +2,25 @@ package org.example.repo;
 
 import org.example.model.Trainer;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class TrainerRepo {
 
     private List<Trainer> trainerDB;
 
     public TrainerRepo() {
-
-        //TODO lista przykładowych trenerów, analogicznie do userów
-
-        this.trainerDB = List.of();
+        this.trainerDB = new ArrayList<>(List.of(
+                new Trainer("Anna Kowalska", Arrays.asList("Yoga", "Pilates")),
+                new Trainer("Marek Nowak", Arrays.asList("Crossfit", "TRX")),
+                new Trainer("Ewa Wiśniewska", Arrays.asList("Zumba", "Cardio")),
+                new Trainer("Krzysztof Krawczyk", Arrays.asList("Bodybuilding", "Strength")),
+                new Trainer("Joanna Majewska", Arrays.asList("Dance", "Stretching")),
+                new Trainer("Tomasz Zieliński", Arrays.asList("Running", "Cycling")),
+                new Trainer("Agnieszka Wójcik", Arrays.asList("Boxing", "Kickboxing")),
+                new Trainer("Piotr Jankowski", Arrays.asList("Swimming", "Aqua Aerobics")),
+                new Trainer("Katarzyna Kamińska", Arrays.asList("Yoga", "Meditation")),
+                new Trainer("Łukasz Piątek", Arrays.asList("Calisthenics", "Parkour"))
+        ));
     }
 
     public List<Trainer> findAll(){

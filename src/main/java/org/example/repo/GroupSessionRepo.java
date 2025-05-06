@@ -3,19 +3,23 @@ package org.example.repo;
 import org.example.model.EntryLog;
 import org.example.model.GroupSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class GroupSessionRepo {
 
-    List<GroupSession> groupSessionDB;
+    List<GroupSession> groupSessionDB = new ArrayList<>();
 
     public GroupSessionRepo() {
+        TrainerRepo trainerRepo = new TrainerRepo();
 
-        //TODO lista przykładowych sesji grupowych, analogicznie do userów
-
-        this.groupSessionDB = List.of();
+        groupSessionDB.add(new GroupSession(trainerRepo.findAll().get(0), 10));  // Yoga with Anna Kowalska
+        groupSessionDB.add(new GroupSession(trainerRepo.findAll().get(1), 12));  // Crossfit with Marek Nowak
+        groupSessionDB.add(new GroupSession(trainerRepo.findAll().get(2), 15));  // Zumba with Ewa Wiśniewska
+        groupSessionDB.add(new GroupSession(trainerRepo.findAll().get(3), 8));   // Bodybuilding with Krzysztof Krawczyk
+        groupSessionDB.add(new GroupSession(trainerRepo.findAll().get(4), 10));  // Dance with Joanna Majewska
     }
 
     public List<GroupSession> findAll(){
@@ -32,29 +36,13 @@ public class GroupSessionRepo {
                 .findFirst();
     }
     public void save(GroupSession session){
-        Optional<GroupSession> oldSession = groupSessionDB.stream()
-                .filter(s -> s.getId().equals(session.getId()))
-                .findFirst();
-        if (!oldSession.isPresent()){
-            addSession(session);
-        }
-        else{
-            deleteSession(session.getId());
-            addSession(session);
-        }
+        deleteSession(session.getId());
+        groupSessionDB.add(session);
     }
     public void addSession(GroupSession session){
         groupSessionDB.add(session);
     }
     public void deleteSession(UUID id){
-        Optional<GroupSession> session = groupSessionDB.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst();
-        groupSessionDB.remove(session);
+        groupSessionDB.removeIf(session -> session.getId().equals(id));
     }
-
-
-
-
-
 }

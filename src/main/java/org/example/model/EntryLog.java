@@ -16,6 +16,18 @@ public class EntryLog {
         this.entryTime = LocalDateTime.now();
         this.exitTime = null;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Entry Log Details:\n");
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("User: ").append(user != null ? user.getName() : "No User").append("\n");
+        sb.append("Entry Time: ").append(entryTime).append("\n");
+        sb.append("Exit Time: ").append(exitTime != null ? exitTime : "Not exited yet").append("\n");
+        return sb.toString();
+    }
+
     public void registerExit(){
         this.exitTime = LocalDateTime.now();
     }
