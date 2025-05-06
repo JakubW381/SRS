@@ -13,6 +13,12 @@ public class UserRepo {
         User user2 = new User("Adrian","haslo2", "adrian@adrian.pl" , ROLE.USER);
         userDB.add(user);
     }
+    public List<User> findAll(){
+        return userDB;
+    }
+    public void save(List<User> updated){
+        userDB = updated;
+    }
 
     public User register(String username, String password, String email){
         boolean able = true;

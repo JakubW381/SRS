@@ -5,6 +5,7 @@ import org.example.model.enums.ROLE;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -45,7 +46,23 @@ public class User {
 
     private ROLE role;
 
-    public User(String name,String password, String email , ROLE role) {
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setMembreship(Membership membreship) {
+        this.membreship = membreship;
+    }
+
+    public User(String name, String password, String email , ROLE role) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
@@ -56,8 +73,18 @@ public class User {
         this.role = role;
     }
 
-    public Reservation reserveSession(GroupSession session) {
-        return new Reservation();
+    public void reserveSession(GroupSession session) {
+        reservations.add(new Reservation(this,session));
+    }
+    public void cancelReservation(GroupSession session){
+        Optional<Reservation> reservationOpt = reservations.stream()
+                .filter(r -> r.getGroupSession().equals(session))
+                .findFirst();
+        if (reservationOpt.isPresent()){
+            reservations.remove(reservationOpt.get());
+        }else{
+            System.out.println("No such reservation");
+        }
     }
     public EntryLog logEntry() {
         EntryLog log = new EntryLog(
