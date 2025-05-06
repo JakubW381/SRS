@@ -11,7 +11,7 @@ public class UserRepo {
         User user = new User("Maciej","haslo1", "maciej@maciej.pl" , ROLE.ADMIN);
         userDB.add(user);
         User user2 = new User("Adrian","haslo2", "adrian@adrian.pl" , ROLE.USER);
-        userDB.add(user);
+        userDB.add(user2);
     }
     public List<User> findAll(){
         return userDB;
