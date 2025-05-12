@@ -28,17 +28,17 @@ public class EntryLog {
         return sb.toString();
     }
 
-    public void registerExit(){
-        this.exitTime = LocalDateTime.now();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+//    public void registerExit(){
+//        this.exitTime = LocalDateTime.now();
+//    }
+//
+//    public UUID getId() {
+//        return id;
+//    }
+//
+//    public void setId(UUID id) {
+//        this.id = id;
+//    }
 
     public User getUser() {
         return user;

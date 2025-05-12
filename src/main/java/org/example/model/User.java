@@ -2,10 +2,7 @@ package org.example.model;
 
 import org.example.model.enums.ROLE;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 public class User {
@@ -74,6 +71,9 @@ public class User {
 
     private ROLE role;
 
+    public List<EntryLog> getEntrylogs() {
+        return entrylogs;
+    }
     public List<Reservation> getReservations() {
         return reservations;
     }
@@ -86,8 +86,8 @@ public class User {
         return id;
     }
 
-    public void setMembreship(Membership membreship) {
-        this.membership = membreship;
+    public void setMembership(Membership membership) {
+        this.membership = membership;
     }
 
     public User(String name, String password, String email , ROLE role) {
@@ -105,10 +105,12 @@ public class User {
         reservations.add(new Reservation(this,session));
     }
     public void cancelReservation(GroupSession session) {
-        Optional<Reservation> reservationOpt = reservations.stream()
+        Reservation reservation = reservations.stream()
                 .filter(r -> r.getGroupSession().getId().equals(session.getId()))
-                .findFirst();
-        reservationOpt.ifPresent(reservation -> reservations.remove(reservation));
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
+
+        reservations.remove(reservation);
     }
     public EntryLog logEntry() {
         EntryLog log = new EntryLog(
@@ -117,13 +119,15 @@ public class User {
         this.entrylogs.add(log);
         return log;
     }
-    public void logExit() {
+    public boolean logExit() {
         if (!entrylogs.isEmpty()) {
             EntryLog log = entrylogs.get(entrylogs.size() - 1);
             log.setExitTime();
             this.entrylogs.set(entrylogs.size() - 1, log);
+            return true;
         } else {
             System.out.println("No entry log found for this user.");
+            return false;
         }
     }
     public boolean checkMembershipStatus() {

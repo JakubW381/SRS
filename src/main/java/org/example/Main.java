@@ -128,7 +128,7 @@ public class Main {
                             }
                             if (paymentMethod != null) {
                                 System.out.println(paymentMethod.processPayment(total, currentUser));
-                                currentUser.setMembreship(
+                                currentUser.setMembership(
                                     new Membership(membChoice == 1 ? MEMBERSHIP_TYPE.MONTHLY : MEMBERSHIP_TYPE.YEARLY)
                                 );
                             }

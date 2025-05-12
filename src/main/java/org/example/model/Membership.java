@@ -47,6 +47,8 @@ public class Membership {
             System.out.println("Invalid number of days.");
         }
     }
+
+
     public void cancel() {
         this.validUntil = LocalDateTime.now().minusDays(1);
         System.out.println("Membership has been canceled.");
