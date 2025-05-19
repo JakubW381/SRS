@@ -21,7 +21,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         String s = "";
-        while(true){
+        while (true) {
             User currentUser = null;
             // Authentication menu
             int authChoice;
@@ -41,8 +41,10 @@ public class Main {
                         System.out.print("Password: ");
                         String password = scanner.nextLine();
                         currentUser = userRepo.login(login, password);
-                        if (currentUser != null) currentUser.logEntry();
-                        else break;
+                        if (currentUser != null)
+                            currentUser.logEntry();
+                        else
+                            break;
                         break;
                     case 2: // Register
                         scanner.nextLine(); // For login/password feed spacing
@@ -53,8 +55,10 @@ public class Main {
                         System.out.print("Email: ");
                         String email = scanner.nextLine();
                         currentUser = userRepo.register(regLogin, regPassword, email);
-                        if (currentUser != null) currentUser.logEntry();
-                        else break;
+                        if (currentUser != null)
+                            currentUser.logEntry();
+                        else
+                            break;
                         break;
                     case 3: // Exit
                         System.exit(0);
@@ -63,7 +67,8 @@ public class Main {
                         System.out.println("Auth Error, Try Again!");
                         continue;
                 }
-                if (authChoice == 1 || authChoice == 2) break;
+                if (authChoice == 1 || authChoice == 2)
+                    break;
             } while (true);
 
             // "UI" dla zalogowanego usera i admina
@@ -78,15 +83,14 @@ public class Main {
                             "[5] Show trainers",
                             "[6] Extend membership",
                             "[7] Cancel membership",
-                            "[8] Logout"
-                    ));
-                    if (currentUser.getRole().equals(ROLE.ADMIN)){
+                            "[8] Show my reservations",
+                            "[9] Logout"));
+                    if (currentUser.getRole().equals(ROLE.ADMIN)) {
                         userOptions.addAll(Arrays.asList(
-                                "[9] Add Trainer",
-                                "[10] Delete Trainer",
-                                "[11] Add Group Session",
-                                "[12] Delete Group Session"
-                        ));
+                                "[10] Add Trainer",
+                                "[11] Delete Trainer",
+                                "[12] Add Group Session",
+                                "[13] Delete Group Session"));
                     }
                     MenuUtils.displayMenu("Main Menu", userOptions, currentUser);
                     while (!scanner.hasNextInt()) {
@@ -101,7 +105,8 @@ public class Main {
                             break;
                         case 2: // Buy membership
                             if (currentUser.getMembership() != null && currentUser.checkMembershipStatus()) {
-                                System.out.println("You already have an active membership. Cancel it first before buying a new one.");
+                                System.out.println(
+                                        "You already have an active membership. Cancel it first before buying a new one.");
                                 break;
                             }
                             System.out.println("1. Monthly: " + 1.0 * 30.0);
@@ -127,16 +132,24 @@ public class Main {
                             scanner.nextLine();
                             Payment paymentMethod = null;
                             switch (payChoice) {
-                                case 1: paymentMethod = new Blik(); break;
-                                case 2: paymentMethod = new Paypal(); break;
-                                case 3: paymentMethod = new Card(); break;
-                                default: System.out.println("Invalid Payment Option"); break;
+                                case 1:
+                                    paymentMethod = new Blik();
+                                    break;
+                                case 2:
+                                    paymentMethod = new Paypal();
+                                    break;
+                                case 3:
+                                    paymentMethod = new Card();
+                                    break;
+                                default:
+                                    System.out.println("Invalid Payment Option");
+                                    break;
                             }
                             if (paymentMethod != null) {
                                 System.out.println(paymentMethod.processPayment(total, currentUser));
                                 currentUser.setMembership(
-                                        new Membership(membChoice == 1 ? MEMBERSHIP_TYPE.MONTHLY : MEMBERSHIP_TYPE.YEARLY)
-                                );
+                                        new Membership(
+                                                membChoice == 1 ? MEMBERSHIP_TYPE.MONTHLY : MEMBERSHIP_TYPE.YEARLY));
                             }
                             break;
 
@@ -170,7 +183,7 @@ public class Main {
                                     }
                                     break;
                                 case 2:
-                                    System.out.println("Enter session ID:");
+                                    System.out.print("Enter session ID:");
                                     UUID id = UUID.fromString(scanner.nextLine());
                                     Optional<GroupSession> sessionOpt = groupSessionRepo.findById(id);
                                     if (sessionOpt.isPresent()) {
@@ -218,7 +231,9 @@ public class Main {
                                     System.out.println("Invalid input.");
                                     break;
                                 }
-                                double pricePerDay = (currentUser.getMembership().getType() == MEMBERSHIP_TYPE.MONTHLY) ? 1.0 : 0.8;
+                                double pricePerDay = (currentUser.getMembership().getType() == MEMBERSHIP_TYPE.MONTHLY)
+                                        ? 1.0
+                                        : 0.8;
                                 double cost = pricePerDay * days;
                                 if (currentUser.getWallet() < cost) {
                                     System.out.println("Insufficient funds to extend membership.");
@@ -226,7 +241,8 @@ public class Main {
                                 }
                                 currentUser.setWallet(currentUser.getWallet() - cost);
                                 currentUser.getMembership().extendMembership(days);
-                                System.out.println("Membership extended by " + days + " days. Cost: " + cost + " deducted from wallet.");
+                                System.out.println("Membership extended by " + days + " days. Cost: " + cost
+                                        + " deducted from wallet.");
                             } else {
                                 System.out.println("You don't have an active membership.");
                             }
@@ -235,7 +251,8 @@ public class Main {
                         case 7: // Cancel membership and refund proportional amount
                             if (currentUser.getMembership() != null) {
                                 Membership m = currentUser.getMembership();
-                                int remainingDays = m.getRemainingDays(); // jeśli nie masz tej metody, musisz ją dodać lub wyliczyć
+                                int remainingDays = m.getRemainingDays(); // jeśli nie masz tej metody, musisz ją dodać
+                                                                          // lub wyliczyć
                                 double pricePerDay = (m.getType() == MEMBERSHIP_TYPE.MONTHLY) ? 1.0 : 0.8;
                                 double refund = pricePerDay * remainingDays;
                                 currentUser.setWallet(currentUser.getWallet() + refund);
@@ -245,11 +262,19 @@ public class Main {
                                 System.out.println("You don't have an active membership.");
                             }
                             break;
-
-
-                        case 8: // Logout
+                        case 8: // Show my reservations
+                            if (currentUser.getReservations() != null && !currentUser.getReservations().isEmpty()) {
+                                System.out.println("Your Reservations:");
+                                for (Reservation reservation : currentUser.getReservations()) {
+                                    System.out.println(reservation);
+                                }
+                            } else {
+                                System.out.println("You have no reservations.");
+                            }
                             break;
-                        case 9: // Add Trainer (ADMIN)
+                        case 9: // Logout
+                            break;
+                        case 10: // Add Trainer (ADMIN)
                             if (currentUser.getRole().equals(ROLE.ADMIN)) {
                                 System.out.println("Enter trainer name");
                                 String name = scanner.nextLine();
@@ -259,7 +284,7 @@ public class Main {
                                 trainerRepo.addTrainer(trainer);
                             }
                             break;
-                        case 10: // Delete Trainer (ADMIN)
+                        case 11: // Delete Trainer (ADMIN)
                             if (currentUser.getRole().equals(ROLE.ADMIN)) {
                                 System.out.print("Enter trainer ID: ");
                                 UUID tid = UUID.fromString(scanner.nextLine());
@@ -270,7 +295,7 @@ public class Main {
                                 }
                             }
                             break;
-                        case 11: // Add Group Session (ADMIN)
+                        case 12: // Add Group Session (ADMIN)
                             if (currentUser.getRole().equals(ROLE.ADMIN)) {
                                 System.out.print("Enter trainer ID: ");
                                 UUID tid = UUID.fromString(scanner.nextLine());
@@ -285,7 +310,7 @@ public class Main {
                                 }
                             }
                             break;
-                        case 12: // Delete Group Session (ADMIN)
+                        case 13: // Delete Group Session (ADMIN)
                             if (currentUser.getRole().equals(ROLE.ADMIN)) {
                                 System.out.print("Enter Group Session ID: ");
                                 UUID gid = UUID.fromString(scanner.nextLine());
@@ -293,7 +318,8 @@ public class Main {
                                 if (groupSessionOpt.isPresent()) {
                                     GroupSession session = groupSessionOpt.get();
                                     for (User user : userRepo.findAll()) {
-                                        if (user.getReservations().stream().anyMatch(r -> r.getGroupSession().equals(session))) {
+                                        if (user.getReservations().stream()
+                                                .anyMatch(r -> r.getGroupSession().equals(session))) {
                                             user.cancelReservation(session);
                                         }
                                     }
@@ -307,7 +333,7 @@ public class Main {
                             System.out.println("Invalid choice, please try again.");
                             break;
                     }
-                } while (userChoice != 8); // 8 == Logout
+                } while (userChoice != 9); // 9 == Logout
             }
             currentUser.logExit();
             currentUser = null;

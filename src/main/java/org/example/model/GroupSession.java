@@ -26,8 +26,8 @@ public class GroupSession {
         StringBuilder sb = new StringBuilder();
         sb.append("Group Session Details:\n");
         sb.append("ID: ").append(id).append("\n");
-        sb.append("Trainer: ").append(trainer != null ? trainer.toString() : "No Trainer").append("\n");
-        sb.append("Participants / Capacity: ").append(participants != null ? participants.size() : 0).append(" / ").append(capacity).append("\n");
+        sb.append(trainer != null ? trainer.toString() : "Trainer: No Trainer").append("\n");
+        sb.append("Participants | Capacity: ").append(participants != null ? participants.size() : 0).append(" / ").append(capacity).append("\n");
         return sb.toString();
     }
 
