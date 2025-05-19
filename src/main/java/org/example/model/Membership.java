@@ -13,6 +13,14 @@ public class Membership {
     private LocalDateTime validUntil;
     private double price;
 
+    public LocalDateTime getValidUntil() {
+        return validUntil;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     public MEMBERSHIP_TYPE getType() {
         return type;
     }

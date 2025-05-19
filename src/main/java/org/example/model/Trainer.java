@@ -11,6 +11,10 @@ public class Trainer {
     private List<String> specialities;
     private List<GroupSession> assignedSessions;
 
+    public List<GroupSession> getAssignedSessions() {
+        return assignedSessions;
+    }
+
     public String getName() {
         return name;
     }

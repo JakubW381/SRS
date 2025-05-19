@@ -16,6 +16,10 @@ public class User {
     private List<EntryLog> entrylogs;
     private List<Reservation> reservations;
 
+    public Membership getMembership() {
+        return membership;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
